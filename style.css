@@ -1,0 +1,294 @@
+:root {
+  --bg: #2a0d17;
+  --text: #f6d7bc;
+  --card: #780c2c;
+  --card-shadow: #1a070f;
+  --card-glow: rgba(255, 71, 133, 0.2);
+  --line: rgba(246, 215, 188, 0.2);
+  --soft: rgba(246, 215, 188, 0.86);
+  --radius: 20px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  position: relative;
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(80vw 40vw at 10% -10%, #4b1228 0%, transparent 55%),
+    radial-gradient(70vw 35vw at 90% -20%, #3a0f20 0%, transparent 55%),
+    var(--bg);
+  padding: clamp(0.8rem, 2vw, 1.8rem);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20vh -20vw;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 24%, rgba(255, 73, 137, 0.12), transparent 35%),
+    radial-gradient(circle at 80% 18%, rgba(255, 206, 177, 0.08), transparent 38%),
+    radial-gradient(circle at 40% 90%, rgba(255, 118, 170, 0.08), transparent 40%);
+  animation: ambient-drift 18s ease-in-out infinite alternate;
+  z-index: -1;
+}
+
+.page {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 1.15rem;
+  animation: fade-up 700ms ease-out both;
+}
+
+.hero h1 {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: clamp(0.05em, 0.35vw, 0.12em);
+  line-height: 1.08;
+  font-size: clamp(1.3rem, 4.1vw, 3rem);
+  text-wrap: balance;
+}
+
+.hero p {
+  margin: 0.7rem auto 0;
+  max-width: 62ch;
+  font-size: clamp(0.95rem, 2vw, 1.2rem);
+  color: var(--soft);
+  line-height: 1.35;
+}
+
+.chips {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.chip {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.84rem;
+  background: rgba(120, 12, 44, 0.28);
+  transition: border-color 220ms ease, background-color 220ms ease, transform 220ms ease;
+}
+
+.chip:hover {
+  transform: translateY(-1px);
+  border-color: rgba(246, 215, 188, 0.45);
+  background: rgba(143, 15, 52, 0.4);
+}
+
+.grid {
+  display: grid;
+  gap: 0.95rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.card {
+  position: relative;
+  background: linear-gradient(165deg, #850f34 0%, var(--card) 70%);
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 164, 196, 0.28);
+  box-shadow: 0 8px 0 var(--card-shadow);
+  padding: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 265px;
+  transform: translateY(10px);
+  opacity: 0;
+  animation: card-in 620ms ease-out both;
+  transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
+  overflow: hidden;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 0 40%, rgba(255, 220, 203, 0.12) 50%, transparent 60% 100%);
+  transform: translateX(-120%);
+  transition: transform 500ms ease;
+  pointer-events: none;
+}
+
+.card:nth-child(1) { animation-delay: 40ms; }
+.card:nth-child(2) { animation-delay: 110ms; }
+.card:nth-child(3) { animation-delay: 180ms; }
+.card:nth-child(4) { animation-delay: 250ms; }
+.card:nth-child(5) { animation-delay: 320ms; }
+
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 13px 0 var(--card-shadow), 0 0 0 1px var(--card-glow);
+    border-color: rgba(255, 204, 223, 0.52);
+  }
+
+  .card:hover::after {
+    transform: translateX(120%);
+  }
+}
+
+.card h2 {
+  margin: 0;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  padding-left: 0.25em;
+  line-height: 1.15;
+}
+
+.row {
+  border-bottom: 1px solid rgba(246, 215, 188, 0.17);
+  padding-bottom: 0.34rem;
+  margin-bottom: 0.18rem;
+}
+
+.row:last-of-type {
+  margin-bottom: 0;
+}
+
+.value {
+  display: block;
+  font-size: clamp(1.35rem, 3.1vw, 2.25rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: color 180ms ease, text-shadow 180ms ease;
+}
+
+.value.tick {
+  animation: value-pop 320ms ease-out;
+}
+
+.label {
+  display: block;
+  margin-top: 0.15rem;
+  text-transform: uppercase;
+  font-size: clamp(0.8rem, 1.2vw, 0.98rem);
+  line-height: 1.12;
+  letter-spacing: 0.05em;
+  color: var(--soft);
+}
+
+.card-note {
+  margin-top: auto;
+  border-top: 1px dashed rgba(246, 215, 188, 0.25);
+  padding-top: 0.6rem;
+  font-size: 0.87rem;
+  line-height: 1.25;
+  color: var(--soft);
+}
+
+.card-poetica {
+  grid-column: 1 / -1;
+  min-height: auto;
+}
+
+.footer {
+  margin-top: 1.1rem;
+  text-align: center;
+  font-size: clamp(1rem, 2.1vw, 1.3rem);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--soft);
+  animation: fade-up 760ms ease-out 240ms both;
+}
+
+@keyframes ambient-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(2.5vw, -1.8vh, 0) scale(1.04);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.995);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes value-pop {
+  0% {
+    color: var(--text);
+    text-shadow: 0 0 0 rgba(255, 212, 192, 0);
+    transform: translateY(0);
+  }
+  38% {
+    color: #ffe7d2;
+    text-shadow: 0 0 12px rgba(255, 212, 192, 0.36);
+    transform: translateY(-1px);
+  }
+  100% {
+    color: var(--text);
+    text-shadow: 0 0 0 rgba(255, 212, 192, 0);
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 980px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .card-poetica {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    min-height: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
